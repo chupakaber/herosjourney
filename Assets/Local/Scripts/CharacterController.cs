@@ -252,6 +252,30 @@ namespace Scripts
             // transform.position = HipsTransform.InverseTransformPoint(HipsTransform.rotation * _baseHipsLocalPosition);
             // HipsTransform.position = storedHipsPosition;
 
+            if (AttackMode)
+            {
+                // ---
+                var ray = MainCamera.ScreenPointToRay(_pointOnScreen);
+                var hitCount = Physics.RaycastNonAlloc(ray, _resultHits, 1000f);
+                for (var i = 0; i < hitCount; i++)
+                {
+                    var hitInfo = _resultHits[i];
+                    if (!hitInfo.collider.gameObject.Equals(gameObject) && hitInfo.collider.gameObject.TryGetComponent<CharacterController>(out var targetCharacterController))
+                    {
+                        // Debug.Log($"Target character: {targetCharacterController.name}");
+                        TargetCharacter = targetCharacterController;
+                        i = hitCount;
+                    }
+                }
+
+                if (TargetCharacter != null)
+                {
+                    _targetPosition = TargetCharacter.transform.position;
+                    PointMovementDirection = _targetPosition - transform.position;
+                }
+                // ---
+            }
+
             ShowStats();
             ShowEnemyStats();
         }
@@ -403,8 +427,9 @@ namespace Scripts
         {
             _moving = !context.canceled;
             
-            if (AttackInProgress && _moving && !AttackMode)
+            if (_moving && !AttackMode)
             {
+                TargetCharacter = null;
                 AttackInProgress = false;
             }
         }
