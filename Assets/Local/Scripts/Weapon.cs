@@ -20,6 +20,7 @@ namespace Scripts
         public DamageSet[] DamageSets = new DamageSet[0];
         public VisualEffect[] VisualEffects = new VisualEffect[0];
         public Transform EmitterPivot;
+        public DamageEffect[] AdditionalDamage = new DamageEffect[0];
 
         [Header("Runtime:")]
         private float[] _trailRendererWidths;
@@ -46,6 +47,15 @@ namespace Scripts
                 visualEffect.StartPosition = EmitterPivot != null ? EmitterPivot.position : dealer.transform.position;
                 visualEffect.EndPosition = target.transform.position + Vector3.up * 0.5f;
                 visualEffect.Apply(activationType, dealer, target);
+            }
+
+            foreach (var effectPrefab in AdditionalDamage)
+            {
+                if (effectPrefab.ActivationTrigger == activationType)
+                {
+                    var effect = Instantiate(effectPrefab.gameObject).GetComponent<Effect>();
+                    effect.Apply(activationType, dealer, target);
+                }
             }
         }
 

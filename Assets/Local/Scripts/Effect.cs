@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 namespace Scripts
@@ -10,7 +9,8 @@ namespace Scripts
             NONE = 0,
             Use = 1,
             DamageDeal = 2,
-            StartAttack = 3
+            StartAttack = 3,
+            Critical = 4
         }
 
         public EffectActivationType ActivationTrigger = EffectActivationType.NONE;

@@ -580,19 +580,26 @@ namespace Scripts
                 var minCrit = (Agility * 0.1f + 0f) * 0.01f;
                 var maxCrit = (Agility * 0.5f + 0f) * 0.01f;
 
+                Crit = Crit + UnityEngine.Random.Range(minCrit, maxCrit);
+
                 EquipedWeapon?.ApplyEffect(Effect.EffectActivationType.DamageDeal, this, TargetCharacter);
 
                 var damage = new Damage();
-                damage.Prepare(this, TargetCharacter);
 
-                Crit = Crit + UnityEngine.Random.Range(minCrit, maxCrit);
                 if (Crit >= 1f)
                 {
-                    Crit = 0f;
+                    damage.IsCritical = true;
+                }
+
+                damage.Prepare(this, TargetCharacter, EquipedWeapon.DamageSets);
+
+                if (Crit >= 1f)
+                {
                     if (EquipedWeapon != null)
                     {
-                        damage.Value[(int) DamageTypeEnum.Physic] *= EquipedWeapon.CritMultiplier;
+                        EquipedWeapon.ApplyEffect(Effect.EffectActivationType.Critical, this, TargetCharacter);
                     }
+                    Crit = 0f;
                 }
 
                 var healthBefore = TargetCharacter.Health;

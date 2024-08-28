@@ -96,6 +96,8 @@ MonoBehaviour:
   VisualEffects:
   - {fileID: 3617618422659585996, guid: 69f65d8c7e2a2e4409654a0e67bfb4a1, type: 3}
   EmitterPivot: {fileID: 7439165521191126290}
+  AdditionalDamage:
+  - {fileID: 8892714028375251945, guid: 708b42633a8e2d44182999e67418e9e6, type: 3}
 --- !u!1 &5069833522462074603
 GameObject:
   m_ObjectHideFlags: 0

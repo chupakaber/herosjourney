@@ -16,7 +16,7 @@ namespace Scripts
         public DamageTypeEnum DamageType;
         public DamageSetPart[] Components = new DamageSetPart[0];
 
-        public float GetValue(CharacterController user, CharacterController targetCharacter)
+        public float GetValue(CharacterController user, CharacterController targetCharacter, bool isCritical)
         {
             var value = 0f;
             foreach (var component in Components)
@@ -57,6 +57,10 @@ namespace Scripts
             }
             var resistance = targetCharacter.Resistance[(int) DamageType];
             value *= (500 + resistance) / (500 + resistance * 5);
+
+            if (isCritical && user.EquipedWeapon != null)
+                value *= user.EquipedWeapon.CritMultiplier;
+
             return value;
         }
     }
