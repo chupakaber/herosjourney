@@ -6,7 +6,7 @@ namespace Scripts
     public class Weapon : ItemBase
     {
         [Header("Stats:")]
-        public float BaseDamage = 20f;
+        // public float BaseDamage = 20f;
         public float CritMultiplier = 2f;
         public float AttackRange = 0f;
         public float AttackRadius = 1.6f;
@@ -17,6 +17,9 @@ namespace Scripts
         public TrailRenderer[] TrailRenderers;
         public Transform RightHandVisual;
         public Transform LeftHandVisual;
+        public DamageSet[] DamageSets = new DamageSet[0];
+        public VisualEffect[] VisualEffects = new VisualEffect[0];
+        public Transform EmitterPivot;
 
         [Header("Runtime:")]
         private float[] _trailRendererWidths;
@@ -29,6 +32,20 @@ namespace Scripts
             {
                 TrailRenderers[i].enabled = false;
                 _trailRendererWidths[i] = TrailRenderers[i].widthMultiplier;
+            }
+        }
+
+        public void ApplyEffect(Effect.EffectActivationType activationType, CharacterController dealer, CharacterController target)
+        {
+            foreach (var visualEffectPrefab in VisualEffects)
+            {
+                if (visualEffectPrefab.ActivationTrigger != activationType)
+                    continue;
+                
+                var visualEffect = Instantiate(visualEffectPrefab.gameObject).GetComponent<VisualEffect>();
+                visualEffect.StartPosition = EmitterPivot != null ? EmitterPivot.position : dealer.transform.position;
+                visualEffect.EndPosition = target.transform.position + Vector3.up;
+                visualEffect.Apply(activationType, dealer, target);
             }
         }
 
@@ -47,14 +64,14 @@ namespace Scripts
             Destroy(gameObject);
         }
 
-        public float GetDamage(CharacterController selfCharacter, CharacterController targetCharacter)
-        {
-            var damage = BaseDamage + selfCharacter.Strenght * 0.5f;
+        // public float GetDamage(DamageEffect damageEffect, CharacterController selfCharacter, CharacterController targetCharacter)
+        // {
+        //     var damage = BaseDamage + selfCharacter.Strenght * 0.5f;
 
-            damage *= (2000 + targetCharacter.ArmorClass) / (2000 + targetCharacter.ArmorClass * 10);
+        //     damage *= (2000 + targetCharacter.ArmorClass) / (2000 + targetCharacter.ArmorClass * 10);
 
-            return damage;
-        }
+        //     return damage;
+        // }
 
         public void Equip(CharacterController character)
         {

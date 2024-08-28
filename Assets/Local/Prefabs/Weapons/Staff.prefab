@@ -45,11 +45,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8435fa8f12f4a514aa59a2900ca8973c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BaseDamage: 20
   CritMultiplier: 1.25
   AttackRange: 6
   AttackRadius: 0
   AttackAngle: 360
+  DamageSets:
+  - DamageType: 5
+    Components:
+    - StatModifier: 0
+      FromTarget: 0
+      Value: 12
+    - StatModifier: 3
+      FromTarget: 0
+      Value: 0.5
+  - DamageType: 3
+    Components:
+    - StatModifier: 0
+      FromTarget: 0
+      Value: 1
+  - DamageType: 4
+    Components:
+    - StatModifier: 0
+      FromTarget: 0
+      Value: 1
+  - DamageType: 6
+    Components:
+    - StatModifier: 0
+      FromTarget: 0
+      Value: 1
+  - DamageType: 7
+    Components:
+    - StatModifier: 0
+      FromTarget: 0
+      Value: 1
+  - DamageType: 8
+    Components:
+    - StatModifier: 0
+      FromTarget: 0
+      Value: 1
+  - DamageType: 9
+    Components:
+    - StatModifier: 0
+      FromTarget: 0
+      Value: 1
   WeaponVisual:
   - {fileID: 5069833522462074603}
   TrailRenderers: []

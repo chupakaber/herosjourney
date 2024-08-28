@@ -133,8 +133,8 @@ namespace Scripts
         private NavMeshPath _navMeshPath;
         private Vector3[] _pathCorners = new Vector3[100];
 
-        private LinkedList<float> _damageDealtLog = new LinkedList<float>();
-        private LinkedList<float> _damageTakenLog = new LinkedList<float>();
+        private LinkedList<string> _damageDealtLog = new LinkedList<string>();
+        private LinkedList<string> _damageTakenLog = new LinkedList<string>();
 
         public void Awake()
         {
@@ -553,6 +553,8 @@ namespace Scripts
             _inAttack = true;
             // Debug.Log($"Attack {index} start");
             EquipedWeapon?.ShowTrails();
+
+            EquipedWeapon?.ApplyEffect(Effect.EffectActivationType.StartAttack, this, TargetCharacter);
         }
 
         public void AttackEnd(int index)
@@ -577,6 +579,8 @@ namespace Scripts
             {
                 var minCrit = (Agility * 0.1f + 0f) * 0.01f;
                 var maxCrit = (Agility * 0.5f + 0f) * 0.01f;
+
+                EquipedWeapon?.ApplyEffect(Effect.EffectActivationType.DamageDeal, this, TargetCharacter);
 
                 var damage = new Damage();
                 damage.Prepare(this, TargetCharacter);
@@ -682,21 +686,60 @@ namespace Scripts
             }
         }
 
-        private void LogDamage(TMP_Text text, LinkedList<float> log, Damage damage)
+        private void LogDamage(TMP_Text text, LinkedList<string> log, Damage damage)
         {
             if (text != null)
             {
-                log.AddLast(damage.Value[(int) DamageTypeEnum.Physic]);
-                while(log.Count > 8)
+                var damageName = "";
+                for (var i = 0; i < damage.Value.Length; i++)
                 {
-                    log.RemoveFirst();
+                    var value = damage.Value[i];
+                    if (value > 0f)
+                    {
+                        var damageType = (DamageTypeEnum) i;
+                        
+                        if (damageType != DamageTypeEnum.Physic)
+                        {
+                            damageName = damageType.ToString().ToLower();
+                            switch (damageType)
+                            {
+                                case DamageTypeEnum.Fire:
+                                    damageName = $"<color=#fc5>{damageName}</color>";
+                                break;
+                                case DamageTypeEnum.Dark:
+                                    damageName = $"<color=#777>{damageName}</color>";
+                                break;
+                                case DamageTypeEnum.Frost:
+                                    damageName = $"<color=#99f>{damageName}</color>";
+                                break;
+                                case DamageTypeEnum.Light:
+                                    damageName = $"<color=#ff9>{damageName}</color>";
+                                break;
+                                case DamageTypeEnum.Lightning:
+                                    damageName = $"<color=#ff5>{damageName}</color>";
+                                break;
+                                case DamageTypeEnum.Nature:
+                                    damageName = $"<color=#995>{damageName}</color>";
+                                break;
+                                case DamageTypeEnum.Venom:
+                                    damageName = $"<color=#5f5>{damageName}</color>";
+                                break;
+                            }
+                        }
+
+                        log.AddLast($"{value:N0} {damageName} damage");
+                        while(log.Count > 8)
+                        {
+                            log.RemoveFirst();
+                        }
+                        var s = "";
+                        foreach (var v in log)
+                        {
+                            s += $"{v}\n";
+                        }
+                        text.text = s;
+                    }
                 }
-                var s = "";
-                foreach (var d in log)
-                {
-                    s += $"{d:N0} damage\n";
-                }
-                text.text = s;
             }
         }
     }

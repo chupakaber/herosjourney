@@ -8,7 +8,9 @@ namespace Scripts
         public enum EffectActivationType
         {
             NONE = 0,
-            Use = 1
+            Use = 1,
+            DamageDeal = 2,
+            StartAttack = 3
         }
 
         public EffectActivationType ActivationTrigger = EffectActivationType.NONE;

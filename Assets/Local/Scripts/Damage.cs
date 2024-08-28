@@ -2,17 +2,26 @@ namespace Scripts
 {
     public class Damage
     {
-        public DamageTypeEnum DamageType;
         public float[] Value = new float[10];
 
         public void Prepare(CharacterController dealer, CharacterController receiver)
         {
-            Value[(int) DamageTypeEnum.Physic] = dealer.EquipedWeapon.GetDamage(dealer, receiver);
+            foreach (var damageSet in dealer.EquipedWeapon.DamageSets)
+            {
+                Value[(int) damageSet.DamageType] = damageSet.GetValue(dealer, receiver);
+            }
         }
 
         public void Apply(CharacterController dealer, CharacterController receiver)
         {
-            receiver.Health -= Value[(int) DamageTypeEnum.Physic];
+            for (var i = 0; i < Value.Length; i++)
+            {
+                var damage = Value[i];
+                if (damage > 0f)
+                {
+                    receiver.Health -= damage;
+                }
+            }
         }
     }
 }

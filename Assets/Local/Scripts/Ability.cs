@@ -12,17 +12,17 @@ namespace Scripts
         public float Radius = 1.6f;
         public float Angle = 120f;
 
-        public float GetDamage(CharacterController selfCharacter, CharacterController targetCharacter)
-        {
-            var damage = BaseDamage;
+        // public float GetDamage(CharacterController selfCharacter, CharacterController targetCharacter)
+        // {
+        //     var damage = BaseDamage;
             
-            if (UseWeapon)
-            {
-                damage += selfCharacter.EquipedWeapon.GetDamage(selfCharacter, targetCharacter) * DamageMultiplier;
-            }
+        //     if (UseWeapon)
+        //     {
+        //         damage += selfCharacter.EquipedWeapon.GetDamage(selfCharacter, targetCharacter) * DamageMultiplier;
+        //     }
 
-            return damage;
-        }
+        //     return damage;
+        // }
 
         public Ability Equip(CharacterController character, int slot)
         {
