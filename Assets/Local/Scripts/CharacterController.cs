@@ -139,7 +139,8 @@ namespace Scripts
 
         public void Awake()
         {
-            _inputActions = new InputActions();
+            if (MainCamera != null)
+                _inputActions = new InputActions();
             _baseHipsLocalPosition = HipsTransform.localPosition;
             _targetPosition = transform.position;
             DashTrail.enabled = false;
@@ -160,48 +161,54 @@ namespace Scripts
 
         public void OnEnable()
         {
-            _inputActions.Main.Movement.performed += OnMovement;
-            _inputActions.Main.Movement.canceled += OnMovement;
-            _inputActions.Main.Move.performed += OnMove;
-            _inputActions.Main.Move.canceled += OnMove;
-            _inputActions.Main.Point.performed += OnPoint;
-            _inputActions.Main.Look.performed += OnLook;
-            _inputActions.Main.LookMode.performed += OnLookMode;
-            _inputActions.Main.LookMode.canceled += OnLookMode;
-            _inputActions.Main.Zoom.performed += OnZoom;
-            _inputActions.Main.Attack.performed += OnAttack;
-            _inputActions.Main.Attack.canceled += OnAttack;
-            _inputActions.Main.Stand.started += OnStand;
-            _inputActions.Main.Stand.canceled += OnStand;
-            _inputActions.Main.Dash.performed += OnDash;
-            _inputActions.Main.QuickSlot1.performed += OnQuickSlot;
-            _inputActions.Main.QuickSlot2.performed += OnQuickSlot;
-            _inputActions.Main.QuickSlot3.performed += OnQuickSlot;
-            _inputActions.Main.QuickSlot4.performed += OnQuickSlot;
-            _inputActions.Enable();
+            if (_inputActions != null)
+            {
+                _inputActions.Main.Movement.performed += OnMovement;
+                _inputActions.Main.Movement.canceled += OnMovement;
+                _inputActions.Main.Move.performed += OnMove;
+                _inputActions.Main.Move.canceled += OnMove;
+                _inputActions.Main.Point.performed += OnPoint;
+                _inputActions.Main.Look.performed += OnLook;
+                _inputActions.Main.LookMode.performed += OnLookMode;
+                _inputActions.Main.LookMode.canceled += OnLookMode;
+                _inputActions.Main.Zoom.performed += OnZoom;
+                _inputActions.Main.Attack.performed += OnAttack;
+                _inputActions.Main.Attack.canceled += OnAttack;
+                _inputActions.Main.Stand.started += OnStand;
+                _inputActions.Main.Stand.canceled += OnStand;
+                _inputActions.Main.Dash.performed += OnDash;
+                _inputActions.Main.QuickSlot1.performed += OnQuickSlot;
+                _inputActions.Main.QuickSlot2.performed += OnQuickSlot;
+                _inputActions.Main.QuickSlot3.performed += OnQuickSlot;
+                _inputActions.Main.QuickSlot4.performed += OnQuickSlot;
+                _inputActions.Enable();
+            }
         }
 
         public void OnDisable()
         {
-            _inputActions.Main.Movement.performed -= OnMovement;
-            _inputActions.Main.Movement.canceled -= OnMovement;
-            _inputActions.Main.Move.performed -= OnMove;
-            _inputActions.Main.Move.canceled -= OnMove;
-            _inputActions.Main.Point.performed -= OnPoint;
-            _inputActions.Main.Look.performed -= OnLook;
-            _inputActions.Main.LookMode.performed -= OnLookMode;
-            _inputActions.Main.LookMode.canceled -= OnLookMode;
-            _inputActions.Main.Zoom.performed -= OnZoom;
-            _inputActions.Main.Attack.performed -= OnAttack;
-            _inputActions.Main.Attack.canceled -= OnAttack;
-            _inputActions.Main.Stand.started -= OnStand;
-            _inputActions.Main.Stand.canceled -= OnStand;
-            _inputActions.Main.Dash.performed -= OnDash;
-            _inputActions.Main.QuickSlot1.performed -= OnQuickSlot;
-            _inputActions.Main.QuickSlot2.performed -= OnQuickSlot;
-            _inputActions.Main.QuickSlot3.performed -= OnQuickSlot;
-            _inputActions.Main.QuickSlot4.performed -= OnQuickSlot;
-            _inputActions.Disable();
+            if (_inputActions != null)
+            {
+                _inputActions.Main.Movement.performed -= OnMovement;
+                _inputActions.Main.Movement.canceled -= OnMovement;
+                _inputActions.Main.Move.performed -= OnMove;
+                _inputActions.Main.Move.canceled -= OnMove;
+                _inputActions.Main.Point.performed -= OnPoint;
+                _inputActions.Main.Look.performed -= OnLook;
+                _inputActions.Main.LookMode.performed -= OnLookMode;
+                _inputActions.Main.LookMode.canceled -= OnLookMode;
+                _inputActions.Main.Zoom.performed -= OnZoom;
+                _inputActions.Main.Attack.performed -= OnAttack;
+                _inputActions.Main.Attack.canceled -= OnAttack;
+                _inputActions.Main.Stand.started -= OnStand;
+                _inputActions.Main.Stand.canceled -= OnStand;
+                _inputActions.Main.Dash.performed -= OnDash;
+                _inputActions.Main.QuickSlot1.performed -= OnQuickSlot;
+                _inputActions.Main.QuickSlot2.performed -= OnQuickSlot;
+                _inputActions.Main.QuickSlot3.performed -= OnQuickSlot;
+                _inputActions.Main.QuickSlot4.performed -= OnQuickSlot;
+                _inputActions.Disable();
+            }
         }
 
 
@@ -267,16 +274,19 @@ namespace Scripts
             if (AttackMode)
             {
                 // ---
-                var ray = MainCamera.ScreenPointToRay(_pointOnScreen);
-                var hitCount = Physics.RaycastNonAlloc(ray, _resultHits, 1000f);
-                for (var i = 0; i < hitCount; i++)
+                if (MainCamera != null)
                 {
-                    var hitInfo = _resultHits[i];
-                    if (!hitInfo.collider.gameObject.Equals(gameObject) && hitInfo.collider.gameObject.TryGetComponent<CharacterController>(out var targetCharacterController))
+                    var ray = MainCamera.ScreenPointToRay(_pointOnScreen);
+                    var hitCount = Physics.RaycastNonAlloc(ray, _resultHits, 1000f);
+                    for (var i = 0; i < hitCount; i++)
                     {
-                        // Debug.Log($"Target character: {targetCharacterController.name}");
-                        TargetCharacter = targetCharacterController;
-                        i = hitCount;
+                        var hitInfo = _resultHits[i];
+                        if (!hitInfo.collider.gameObject.Equals(gameObject) && hitInfo.collider.gameObject.TryGetComponent<CharacterController>(out var targetCharacterController))
+                        {
+                            // Debug.Log($"Target character: {targetCharacterController.name}");
+                            TargetCharacter = targetCharacterController;
+                            i = hitCount;
+                        }
                     }
                 }
 
@@ -294,16 +304,18 @@ namespace Scripts
 
         public void Update()
         {
-            var cameraPivotTargetPosition = transform.position + Vector3.up;
-            CameraPivot.transform.position = Vector3.Lerp(CameraPivot.transform.position, cameraPivotTargetPosition, Time.deltaTime * 10f);
-            var targetRotation = Quaternion.Euler(0f, CameraRotationEuler.y, 0f) * Quaternion.Euler(CameraRotationEuler.x, 0f, 0f);
-            CameraPivot.rotation = Quaternion.Lerp(CameraPivot.rotation, targetRotation, Time.deltaTime * 10f);
-
-            
-            var ray = MainCamera.ScreenPointToRay(_pointOnScreen);
-            if (_moving && new Plane(Vector3.up, transform.position).Raycast(ray, out var distance))
+            if (MainCamera != null)
             {
-                _targetPosition = ray.GetPoint(distance);
+                var cameraPivotTargetPosition = transform.position + Vector3.up;
+                CameraPivot.transform.position = Vector3.Lerp(CameraPivot.transform.position, cameraPivotTargetPosition, Time.deltaTime * 10f);
+                var targetRotation = Quaternion.Euler(0f, CameraRotationEuler.y, 0f) * Quaternion.Euler(CameraRotationEuler.x, 0f, 0f);
+                CameraPivot.rotation = Quaternion.Lerp(CameraPivot.rotation, targetRotation, Time.deltaTime * 10f);
+            
+                var ray = MainCamera.ScreenPointToRay(_pointOnScreen);
+                if (_moving && new Plane(Vector3.up, transform.position).Raycast(ray, out var distance))
+                {
+                    _targetPosition = ray.GetPoint(distance);
+                }
             }
 
             var newPointMovementDirection = _targetPosition - transform.position;
@@ -510,7 +522,13 @@ namespace Scripts
 
         public void AttackStart(int index)
         {
-            var ray = MainCamera.ScreenPointToRay(_pointOnScreen);
+            var ray = new Ray();
+            
+            if (MainCamera != null)
+            {
+                ray = MainCamera.ScreenPointToRay(_pointOnScreen);
+            }
+
             // TargetCharacter = null;
             PointMovementDirection = Vector2.zero;
 
@@ -532,7 +550,14 @@ namespace Scripts
 
             if (TargetCharacter != null)
             {
-                ray = new Ray(CameraPivot.transform.position, TargetCharacter.transform.position - CameraPivot.transform.position);
+                if (MainCamera != null)
+                {
+                    ray = new Ray(CameraPivot.transform.position, TargetCharacter.transform.position - CameraPivot.transform.position);
+                }
+                else
+                {
+                    ray = new Ray(TargetCharacter.transform.position + Vector3.up * 10f, -Vector3.up);
+                }
             }
             
             // ---

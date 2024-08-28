@@ -2869,6 +2869,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1918116556361855260, guid: 59619d110e07fdf4380e4ac4e7346877, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4992169958642443077, guid: 59619d110e07fdf4380e4ac4e7346877, type: 3}
       propertyPath: Agility
       value: 10
@@ -2887,7 +2891,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4992169958642443077, guid: 59619d110e07fdf4380e4ac4e7346877, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4992169958642443077, guid: 59619d110e07fdf4380e4ac4e7346877, type: 3}
       propertyPath: ArmorClass
@@ -2948,7 +2952,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6868294617399227769, guid: 59619d110e07fdf4380e4ac4e7346877, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 1890793625}
   m_SourcePrefab: {fileID: 100100000, guid: 59619d110e07fdf4380e4ac4e7346877, type: 3}
 --- !u!1 &1247269777
 GameObject:
@@ -3363,6 +3370,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1918116556361855260, guid: 59619d110e07fdf4380e4ac4e7346877, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4992169958642443077, guid: 59619d110e07fdf4380e4ac4e7346877, type: 3}
       propertyPath: Agility
       value: 10
@@ -3381,7 +3392,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4992169958642443077, guid: 59619d110e07fdf4380e4ac4e7346877, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4992169958642443077, guid: 59619d110e07fdf4380e4ac4e7346877, type: 3}
       propertyPath: ArmorClass
@@ -3438,7 +3449,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6868294617399227769, guid: 59619d110e07fdf4380e4ac4e7346877, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 1956600181}
   m_SourcePrefab: {fileID: 100100000, guid: 59619d110e07fdf4380e4ac4e7346877, type: 3}
 --- !u!1 &1372540203
 GameObject:
@@ -4928,6 +4942,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1884088856}
   m_CullTransparentMesh: 1
+--- !u!1 &1890793616 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6868294617399227769, guid: 59619d110e07fdf4380e4ac4e7346877, type: 3}
+  m_PrefabInstance: {fileID: 1186389828}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1890793625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1890793616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22d54473137ed9b4b89515d4671fbbeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  character: {fileID: 0}
+  target: {fileID: 0}
+  SpawnPoint: {x: 0, y: 0, z: 0}
+  ActivityRadius: 30
+  HomeRadius: 10
+  AggressiveRadius: 3
+  State: 0
+  IdleTargetPoint: {x: 0, y: 0, z: 0}
+--- !u!1 &1956600172 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6868294617399227769, guid: 59619d110e07fdf4380e4ac4e7346877, type: 3}
+  m_PrefabInstance: {fileID: 1349312591}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1956600181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956600172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22d54473137ed9b4b89515d4671fbbeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  character: {fileID: 0}
+  target: {fileID: 0}
+  SpawnPoint: {x: 0, y: 0, z: 0}
+  ActivityRadius: 30
+  HomeRadius: 10
+  AggressiveRadius: 3
+  State: 0
+  IdleTargetPoint: {x: 0, y: 0, z: 0}
 --- !u!1 &1981346783
 GameObject:
   m_ObjectHideFlags: 0
