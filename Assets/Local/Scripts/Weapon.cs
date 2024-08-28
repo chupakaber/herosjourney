@@ -44,7 +44,7 @@ namespace Scripts
                 
                 var visualEffect = Instantiate(visualEffectPrefab.gameObject).GetComponent<VisualEffect>();
                 visualEffect.StartPosition = EmitterPivot != null ? EmitterPivot.position : dealer.transform.position;
-                visualEffect.EndPosition = target.transform.position + Vector3.up;
+                visualEffect.EndPosition = target.transform.position + Vector3.up * 0.5f;
                 visualEffect.Apply(activationType, dealer, target);
             }
         }
