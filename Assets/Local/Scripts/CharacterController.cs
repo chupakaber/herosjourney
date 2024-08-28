@@ -497,7 +497,7 @@ namespace Scripts
 
         public void InvokeAttack()
         {
-            if (EquipedWeapon != null && EquipedWeapon.LeftHandVisual != null && EquipedWeapon.RightHandVisual == null)
+            if (EquipedWeapon != null && EquipedWeapon.AttackRange > float.Epsilon)
             {
                 Animator.SetBool(_animationKeyShooting, true);
             }
