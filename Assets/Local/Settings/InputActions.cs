@@ -107,6 +107,42 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""QuickSlot1"",
+                    ""type"": ""Button"",
+                    ""id"": ""bf407d14-35be-4501-a4c8-45a51afac012"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""QuickSlot2"",
+                    ""type"": ""Button"",
+                    ""id"": ""9e522e27-6fa3-4241-a197-4f0f5c17142f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""QuickSlot3"",
+                    ""type"": ""Button"",
+                    ""id"": ""94d325c8-2a52-44d3-881b-0c289454ee10"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""QuickSlot4"",
+                    ""type"": ""Button"",
+                    ""id"": ""807c1a71-7f93-44b2-a06a-ffbdc012e3a5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -263,6 +299,50 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Stand"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4f57336d-9903-41ad-bb4d-04bafe0580d4"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4c0a12e0-b9c3-4798-aa84-97443c4638b7"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7a564e36-423f-4bab-a044-32ea094658ef"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a8df27d-3c66-4bb5-bad1-6840aa26ad4b"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -280,6 +360,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Main_Point = m_Main.FindAction("Point", throwIfNotFound: true);
         m_Main_Zoom = m_Main.FindAction("Zoom", throwIfNotFound: true);
         m_Main_Stand = m_Main.FindAction("Stand", throwIfNotFound: true);
+        m_Main_QuickSlot1 = m_Main.FindAction("QuickSlot1", throwIfNotFound: true);
+        m_Main_QuickSlot2 = m_Main.FindAction("QuickSlot2", throwIfNotFound: true);
+        m_Main_QuickSlot3 = m_Main.FindAction("QuickSlot3", throwIfNotFound: true);
+        m_Main_QuickSlot4 = m_Main.FindAction("QuickSlot4", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -350,6 +434,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Main_Point;
     private readonly InputAction m_Main_Zoom;
     private readonly InputAction m_Main_Stand;
+    private readonly InputAction m_Main_QuickSlot1;
+    private readonly InputAction m_Main_QuickSlot2;
+    private readonly InputAction m_Main_QuickSlot3;
+    private readonly InputAction m_Main_QuickSlot4;
     public struct MainActions
     {
         private @InputActions m_Wrapper;
@@ -363,6 +451,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @Point => m_Wrapper.m_Main_Point;
         public InputAction @Zoom => m_Wrapper.m_Main_Zoom;
         public InputAction @Stand => m_Wrapper.m_Main_Stand;
+        public InputAction @QuickSlot1 => m_Wrapper.m_Main_QuickSlot1;
+        public InputAction @QuickSlot2 => m_Wrapper.m_Main_QuickSlot2;
+        public InputAction @QuickSlot3 => m_Wrapper.m_Main_QuickSlot3;
+        public InputAction @QuickSlot4 => m_Wrapper.m_Main_QuickSlot4;
         public InputActionMap Get() { return m_Wrapper.m_Main; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -399,6 +491,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Stand.started += instance.OnStand;
             @Stand.performed += instance.OnStand;
             @Stand.canceled += instance.OnStand;
+            @QuickSlot1.started += instance.OnQuickSlot1;
+            @QuickSlot1.performed += instance.OnQuickSlot1;
+            @QuickSlot1.canceled += instance.OnQuickSlot1;
+            @QuickSlot2.started += instance.OnQuickSlot2;
+            @QuickSlot2.performed += instance.OnQuickSlot2;
+            @QuickSlot2.canceled += instance.OnQuickSlot2;
+            @QuickSlot3.started += instance.OnQuickSlot3;
+            @QuickSlot3.performed += instance.OnQuickSlot3;
+            @QuickSlot3.canceled += instance.OnQuickSlot3;
+            @QuickSlot4.started += instance.OnQuickSlot4;
+            @QuickSlot4.performed += instance.OnQuickSlot4;
+            @QuickSlot4.canceled += instance.OnQuickSlot4;
         }
 
         private void UnregisterCallbacks(IMainActions instance)
@@ -430,6 +534,18 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Stand.started -= instance.OnStand;
             @Stand.performed -= instance.OnStand;
             @Stand.canceled -= instance.OnStand;
+            @QuickSlot1.started -= instance.OnQuickSlot1;
+            @QuickSlot1.performed -= instance.OnQuickSlot1;
+            @QuickSlot1.canceled -= instance.OnQuickSlot1;
+            @QuickSlot2.started -= instance.OnQuickSlot2;
+            @QuickSlot2.performed -= instance.OnQuickSlot2;
+            @QuickSlot2.canceled -= instance.OnQuickSlot2;
+            @QuickSlot3.started -= instance.OnQuickSlot3;
+            @QuickSlot3.performed -= instance.OnQuickSlot3;
+            @QuickSlot3.canceled -= instance.OnQuickSlot3;
+            @QuickSlot4.started -= instance.OnQuickSlot4;
+            @QuickSlot4.performed -= instance.OnQuickSlot4;
+            @QuickSlot4.canceled -= instance.OnQuickSlot4;
         }
 
         public void RemoveCallbacks(IMainActions instance)
@@ -458,5 +574,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnPoint(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
         void OnStand(InputAction.CallbackContext context);
+        void OnQuickSlot1(InputAction.CallbackContext context);
+        void OnQuickSlot2(InputAction.CallbackContext context);
+        void OnQuickSlot3(InputAction.CallbackContext context);
+        void OnQuickSlot4(InputAction.CallbackContext context);
     }
 }

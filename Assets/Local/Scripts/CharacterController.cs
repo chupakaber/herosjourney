@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -55,6 +56,7 @@ namespace Scripts
         public TrailRenderer DashTrail;
         public Weapon EquipedWeapon;
         public Ability[] EquipedAbilities = new Ability[6];
+        public QuickSlot[] QuickSlots = new QuickSlot[4];
         public MeshRenderer HealthBarRenderer;
         public MeshRenderer DashCooldownRenderer;
         public NavMeshAgent NavMeshAgent;
@@ -112,6 +114,7 @@ namespace Scripts
         private InputActions _inputActions;
         private int _animationKeyHorizontalVelocity = Animator.StringToHash("HorizontalVelocity");
         private int _animationKeyAttack = Animator.StringToHash("Attack");
+        private int _animationKeyShooting = Animator.StringToHash("Shooting");
         private int _animationKeyDash = Animator.StringToHash("Dash");
         private int _animationKeyDamaged = Animator.StringToHash("Damaged");
         private int _animationKeyDeath = Animator.StringToHash("Death");
@@ -170,6 +173,10 @@ namespace Scripts
             _inputActions.Main.Stand.started += OnStand;
             _inputActions.Main.Stand.canceled += OnStand;
             _inputActions.Main.Dash.performed += OnDash;
+            _inputActions.Main.QuickSlot1.performed += OnQuickSlot;
+            _inputActions.Main.QuickSlot2.performed += OnQuickSlot;
+            _inputActions.Main.QuickSlot3.performed += OnQuickSlot;
+            _inputActions.Main.QuickSlot4.performed += OnQuickSlot;
             _inputActions.Enable();
         }
 
@@ -189,6 +196,10 @@ namespace Scripts
             _inputActions.Main.Stand.started -= OnStand;
             _inputActions.Main.Stand.canceled -= OnStand;
             _inputActions.Main.Dash.performed -= OnDash;
+            _inputActions.Main.QuickSlot1.performed -= OnQuickSlot;
+            _inputActions.Main.QuickSlot2.performed -= OnQuickSlot;
+            _inputActions.Main.QuickSlot3.performed -= OnQuickSlot;
+            _inputActions.Main.QuickSlot4.performed -= OnQuickSlot;
             _inputActions.Disable();
         }
 
@@ -445,6 +456,22 @@ namespace Scripts
             MainCamera.transform.localPosition = new Vector3(0f, 0f, Mathf.Clamp(MainCamera.transform.localPosition.z + delta.y * ScrollSensitivity, -10f, -2f));
         }
 
+        private void OnQuickSlot(InputAction.CallbackContext context)
+        {
+            if (int.TryParse(context.action.name.Substring(9), out var index))
+            {
+                index--;
+                if (index > -1 && index < QuickSlots.Length)
+                {
+                    var slot = QuickSlots[index];
+                    if (slot != null && slot.Item != null)
+                    {
+                        slot.Item.Use(this);
+                    }
+                }
+            }
+        }
+
         public void OnDamaged(Damage damage, CharacterController dealer)
         {
             LogDamage(_damageTakenLogText, _damageTakenLog, damage);
@@ -453,9 +480,7 @@ namespace Scripts
 
             damage.Apply(dealer, this);
 
-            HealthBarRenderer.GetPropertyBlock(_propertyBlock);
-            _propertyBlock.SetFloat(_shaderKeyValue, Health / Mathf.Max(MaxHealth, 0.01f));
-            HealthBarRenderer.SetPropertyBlock(_propertyBlock);
+            UpdateHealthIndicator();
 
             if (Health <= 0f)
             {
@@ -472,7 +497,14 @@ namespace Scripts
 
         public void InvokeAttack()
         {
-            Animator.SetBool(_animationKeyAttack, true);
+            if (EquipedWeapon != null && EquipedWeapon.LeftHandVisual != null && EquipedWeapon.RightHandVisual == null)
+            {
+                Animator.SetBool(_animationKeyShooting, true);
+            }
+            else
+            {
+                Animator.SetBool(_animationKeyAttack, true);
+            }
         }
 
         public void AttackStart(int index)
@@ -536,11 +568,12 @@ namespace Scripts
             }
 
             Animator.SetBool(_animationKeyAttack, false);
+            Animator.SetBool(_animationKeyShooting, false);
         }
 
         public void DealDamage(int index)
         {
-            if (TargetCharacter != null && (TargetCharacter.transform.position - transform.position).magnitude < EquipedWeapon.AttackRadius)
+            if (TargetCharacter != null && (TargetCharacter.transform.position - transform.position).magnitude < EquipedWeapon.AttackRange + EquipedWeapon.AttackRadius)
             {
                 var minCrit = (Agility * 0.1f + 0f) * 0.01f;
                 var maxCrit = (Agility * 0.5f + 0f) * 0.01f;
@@ -590,6 +623,12 @@ namespace Scripts
             MakeDamage(index);
         }
 
+        public void RestoreHealth(float value)
+        {
+            Health = Mathf.Min(Health + value, MaxHealth);
+            UpdateHealthIndicator();
+        }
+
         private IEnumerator HideDashTrail()
         {
             yield return new WaitForSeconds(0.5f);
@@ -610,6 +649,13 @@ namespace Scripts
                     }
                 }
             }
+        }
+
+        private void UpdateHealthIndicator()
+        {
+            HealthBarRenderer.GetPropertyBlock(_propertyBlock);
+            _propertyBlock.SetFloat(_shaderKeyValue, Health / Mathf.Max(MaxHealth, 0.01f));
+            HealthBarRenderer.SetPropertyBlock(_propertyBlock);
         }
 
         private void ShowStats()

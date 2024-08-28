@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Scripts
 {
-    public class Weapon : MonoBehaviour
+    public class Weapon : ItemBase
     {
         [Header("Stats:")]
         public float BaseDamage = 20f;
@@ -32,6 +32,21 @@ namespace Scripts
             }
         }
 
+        public override void Use(CharacterController character)
+        {
+            Equip(character);
+        }
+
+        public override void Remove()
+        {
+            base.Remove();
+            foreach (var visual in WeaponVisual)
+            {
+                DestroyImmediate(visual);
+            }
+            Destroy(gameObject);
+        }
+
         public float GetDamage(CharacterController selfCharacter, CharacterController targetCharacter)
         {
             var damage = BaseDamage + selfCharacter.Strenght * 0.5f;
@@ -41,10 +56,16 @@ namespace Scripts
             return damage;
         }
 
-        public Weapon Equip(CharacterController character)
+        public void Equip(CharacterController character)
         {
             var instance = Instantiate(gameObject).GetComponent<Weapon>();
             
+            if (character.EquipedWeapon != null)
+            {
+                character.EquipedWeapon.Remove();
+                character.EquipedWeapon = null;
+            }
+
             character.EquipedWeapon = instance;
             
             if (instance.RightHandVisual != null)
@@ -60,8 +81,6 @@ namespace Scripts
                 instance.LeftHandVisual.transform.localPosition = Vector3.zero;
                 instance.LeftHandVisual.transform.localRotation = Quaternion.identity;
             }
-
-            return instance;
         }
 
         public void HideTrails()
