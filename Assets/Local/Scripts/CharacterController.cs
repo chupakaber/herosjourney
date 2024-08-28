@@ -70,6 +70,7 @@ namespace Scripts
         
         [Header("Stats")]
         public CharacterClassType ClassType;
+        public float MovingSpeed = 3f;
         public float Strenght;
         public float Vitality;
         public float Agility;
@@ -254,7 +255,7 @@ namespace Scripts
                 if (worldMovementDirection.sqrMagnitude > float.Epsilon)
                 {
                     transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(worldMovementDirection), Time.fixedDeltaTime  * 5f);
-                    targetVelocity = 3f;
+                    targetVelocity = MovingSpeed;
                 }
             }
             MovementVelocity = Mathf.Lerp(MovementVelocity, targetVelocity, Time.fixedDeltaTime * (targetVelocity > MovementVelocity ? 1f : 5f));
